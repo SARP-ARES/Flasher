@@ -188,6 +188,8 @@ fn boot(port: String, path_name: String) -> Result<(), BootError> {
 
     let bar = ProgressBar::new(1000);
 
+    let mut id: bool = false;
+
     let mut bin_index: u64 = 0;
     let mut size: u64 = 0;
     loop {
@@ -226,7 +228,8 @@ fn boot(port: String, path_name: String) -> Result<(), BootError> {
                             };
                         }
                         else if s.contains("DATA") {
-                            let mut buf: [u8; 256] = [0; 256];
+                            let s: usize = if size-bin_index > 256 {256} else {(size-bin_index) as usize};
+                            let mut buf = vec![0; s];
 
                             match file.seek(std::io::SeekFrom::Start(bin_index)) {
                                 Ok(_) => {},
@@ -252,6 +255,9 @@ fn boot(port: String, path_name: String) -> Result<(), BootError> {
                             //println!("DONE");
                             bar.finish();
                             return Ok(());
+                        }
+                        else if s.contains("ID") && !id {
+                            id = true;
                         }
                         else {
                             bar.println(format!("{} {}","> (uncaught)".red(), s.red()));
