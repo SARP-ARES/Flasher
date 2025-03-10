@@ -319,7 +319,7 @@ fn main() {
             // label:
             //  not selectable, useful as a title, separator, etc...
             label("----------------------"),
-            label("SSL Flash"),
+            label("SARP Flash"),
             label("use wasd or arrow keys"),
             label("enter to select"),
             label("-----------------------"),
